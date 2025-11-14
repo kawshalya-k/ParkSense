@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Home - ParkSense{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <h2>Welcome to ParkSense</h2>
+    <p>Find and reserve parking spots in real-time</p>
+    
+    <div class="quick-stats">
+        <div class="stat-card">
+            <h3>{{ total_spots }}</h3>
+            <p>Total Spots</p>
+        </div>
+        <div class="stat-card available">
+            <h3>{{ available_spots }}</h3>
+            <p>Available</p>
+        </div>
+        <div class="stat-card occupied">
+            <h3>{{ occupied_spots }}</h3>
+            <p>Occupied</p>
+        </div>
+        <div class="stat-card reserved">
+            <h3>{{ reserved_spots }}</h3>
+            <p>Reserved</p>
+        </div>
+    </div>
+    
+    <a href="{% url 'parking_map' %}" class="btn-primary">View Parking Map</a>
+</div>
+{% endblock %}

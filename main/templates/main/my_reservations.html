@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}
+
+{% block title %}My Reservations - ParkSense{% endblock %}
+
+{% block content %}
+<div class="reservations-container">
+    <h2>My Reservations</h2>
+    
+    {% if reservations %}
+        <div class="reservations-list">
+            {% for reservation in reservations %}
+            <div class="reservation-card">
+                <h3>Spot {{ reservation.spot.number }}</h3>
+                <p>Location: {{ reservation.spot.location }}</p>
+                <p>Reserved at: {{ reservation.created_at|date:"h:i A" }}</p>
+                <p>Expires at: {{ reservation.expires_at|date:"h:i A" }}</p>
+                {% if reservation.is_expired %}
+                    <span class="expired">Expired</span>
+                {% else %}
+                    <span class="active">Active</span>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No active reservations.</p>
+        <a href="{% url 'parking_map' %}" class="btn-primary">Find a Spot</a>
+    {% endif %}
+</div>
+{% endblock %}

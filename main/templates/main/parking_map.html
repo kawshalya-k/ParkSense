@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Parking Map - ParkSense{% endblock %}
+
+{% block content %}
+<div class="parking-container">
+    <h2>Real-Time Parking Availability</h2>
+    
+    <div class="parking-grid">
+        {% for spot in spots %}
+        <div class="parking-spot {{ spot.status }}">
+            <h3>{{ spot.number }}</h3>
+            <p class="status">{{ spot.get_status_display }}</p>
+            <p class="location">{{ spot.location }}</p>
+            
+            {% if spot.status == 'available' and user.is_authenticated %}
+                <form method="POST" action="{% url 'reserve_spot' spot.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-reserve">Reserve</button>
+                </form>
+            {% elif spot.status == 'available' %}
+                <p class="login-msg">Login to reserve</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
