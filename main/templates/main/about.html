@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+
+{% block title %}About - ParkSense{% endblock %}
+
+{% block content %}
+<div class="about-container">
+    <h1>About ParkSense</h1>
+    
+    <section class="about-section">
+        <h2>Our Mission</h2>
+        <p>
+            ParkSense aims to eliminate the frustration of finding parking spots by leveraging 
+            cutting-edge AI and computer vision technology. We make parking simple, fast, and stress-free.
+        </p>
+    </section>
+    
+    <section class="about-section">
+        <h2>How It Works</h2>
+        <div class="steps-grid">
+            <div class="step">
+                <span class="step-number">1</span>
+                <h3>CCTV Monitoring</h3>
+                <p>Our AI analyzes camera feeds to detect available spots in real-time</p>
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <h3>View & Reserve</h3>
+                <p>Browse available spots on our interactive map and reserve instantly</p>
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <h3>Park with Ease</h3>
+                <p>Your spot is held for 15 minutes - plenty of time to arrive and park</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="about-section">
+        <h2>The Technology</h2>
+        <p>
+            ParkSense uses machine learning models trained on thousands of parking lot images 
+            to accurately detect vehicle presence. Combined with Django's robust backend and 
+            real-time updates, we provide a seamless parking experience.
+        </p>
+    </section>
+</div>
+{% endblock %}

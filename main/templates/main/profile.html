@@ -1,0 +1,63 @@
+{% extends 'main/base.html' %}
+
+{% block title %}My Account - ParkSense{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            {{ user.username|first|upper }}
+        </div>
+        <div class="profile-info">
+            <h1>{{ user.username }}</h1>
+            <p>{{ user.email }}</p>
+        </div>
+    </div>
+    
+    <div class="profile-content">
+        <div class="profile-section">
+            <h2>Quick Actions</h2>
+            <div class="action-buttons">
+                <a href="{% url 'parking_map' %}" class="action-btn">
+                    <span>🅿️</span>
+                    <span>Find Parking</span>
+                </a>
+                <a href="{% url 'my_reservations' %}" class="action-btn">
+                    <span>📋</span>
+                    <span>My Reservations</span>
+                </a>
+                <a href="{% url 'home' %}" class="action-btn">
+                    <span>📊</span>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+        </div>
+        
+        <div class="profile-section">
+            <h2>Recent Activity</h2>
+            {% if reservations %}
+                <div class="activity-list">
+                    {% for reservation in reservations %}
+                    <div class="activity-item">
+                        <div class="activity-icon">🅿️</div>
+                        <div class="activity-details">
+                            <p><strong>Spot {{ reservation.spot.number }}</strong></p>
+                            <p class="activity-time">{{ reservation.created_at|date:"M d, Y - h:i A" }}</p>
+                        </div>
+                        <div class="activity-status">
+                            {% if reservation.is_active %}
+                                <span class="badge active">Active</span>
+                            {% else %}
+                                <span class="badge inactive">Completed</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No recent activity</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

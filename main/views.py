@@ -4,8 +4,24 @@ from django.contrib import messages
 from django.utils import timezone
 from datetime import timedelta
 from .models import ParkingSpot, Reservation
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 
 
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Automatically log in after signup
+            messages.success(request, 'Account created successfully!')
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'main/signup.html', {'form': form})
+
+@login_required
 def home(request):
     total_spots = ParkingSpot.objects.count()
     available_spots = ParkingSpot.objects.filter(status='available').count()
@@ -19,7 +35,6 @@ def home(request):
         'reserved_spots': reserved_spots,
     }
     return render(request, 'main/home.html', context)
-
 
 def parking_map(request):
     spots = ParkingSpot.objects.all().order_by('number')
@@ -59,3 +74,37 @@ def my_reservations(request):
     ).order_by('-created_at')
 
     return render(request, 'main/my_reservations.html', {'reservations': reservations})
+
+@login_required
+def cancel_reservation(request, reservation_id):
+    reservation = get_object_or_404(Reservation, id=reservation_id, user=request.user)
+
+    if reservation.is_active:
+        # Deactivate reservation
+        reservation.is_active = False
+        reservation.save()
+
+        # Free the spot
+        spot = reservation.spot
+        spot.status = 'available'
+        spot.save()
+
+        messages.success(request, f'Reservation for spot {spot.number} cancelled')
+
+    return redirect('my_reservations')
+
+def landing(request):
+    return render(request, 'main/landing.html')
+
+
+def about(request):
+    return render(request, 'main/about.html')
+
+
+@login_required
+def profile(request):
+    reservations = Reservation.objects.filter(
+        user=request.user
+    ).order_by('-created_at')[:5]  # Last 5 reservations
+
+    return render(request, 'main/profile.html', {'reservations': reservations})

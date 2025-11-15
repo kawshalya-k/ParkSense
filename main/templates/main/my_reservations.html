@@ -18,6 +18,10 @@
                     <span class="expired">Expired</span>
                 {% else %}
                     <span class="active">Active</span>
+                    <form method="POST" action="{% url 'cancel_reservation' reservation.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-cancel">Cancel Reservation</button>
+                    </form>
                 {% endif %}
             </div>
             {% endfor %}
